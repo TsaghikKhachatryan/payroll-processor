@@ -1,0 +1,1 @@
+4, emp102, SALARY, 3000, 10-10-2022, “Oct Salary of Steve.”

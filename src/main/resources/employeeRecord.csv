@@ -1,0 +1,8 @@
+sequenceNumber;employeeId;firstName;lastName;designation;Event;Value;EventDate;Notes
+1;emp101;Bill;Gates;Software Engineer;ONBOARD;11-01-2022;10-10-2022;Bill Gates is going to join DataOrb on 1st November as a SE
+2;emp102;;;;SALARY;3000;10-10-2022;Oct Salary of Steve.
+3;emp103;;;;REIMBURSEMENT;100;10-10-2022;Traveling expenses
+4;emp104;;;;EXIT;11-01-2022;11-01-2022;Leaving for further study
+5;emp105;;;;BONUS;1000;11-01-2022;Performance bonus of year 2022
+6;emp106;;;;SALARY;5000;11-10-2022;Oct Salary of Steve.
+7;emp107;;;;SALARY;5000;11-10-2022;Oct Salary of Steve.
