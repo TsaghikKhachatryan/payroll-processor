@@ -1,6 +1,7 @@
 import data.employee.EmployeeRecord;
 import data.event.EventType;
 import data.reports.EmployeeFinancialReport;
+import data.reports.MonthlySalaryReport;
 import data.reports.YearlyFinancialReport;
 import java.math.BigDecimal;
 import java.time.YearMonth;
@@ -16,17 +17,11 @@ import processor.DataProcessor;
 import processor.impl.CsvDataProcessor;
 import processor.impl.TextDataProcessor;
 import data.reports.MonthlyAmountReport;
-import data.reports.MonthlySalaryReport;
 
 public class PayrollProcessor {
-    Logger logger = Logger.getLogger(PayrollProcessor.class.getName());
 
-
+    private final Logger logger = Logger.getLogger(PayrollProcessor.class.getName());
     private List<EmployeeRecord> employeeRecords = new ArrayList<>();
-
-    public void setEmployeeRecords(List<EmployeeRecord> employeeRecords) {
-        this.employeeRecords = employeeRecords;
-    }
 
     public void processEmployeeRecord(String filePath) {
         var fileFormat = getFileExtension(filePath);
@@ -64,24 +59,18 @@ public class PayrollProcessor {
                 .collect(Collectors.toUnmodifiableList());
     }
 
-    public Map<Integer, MonthlySalaryReport> getMonthlySalaryReport(YearMonth date) {
-        var salaryReport = new HashMap<Integer, MonthlySalaryReport>();
+    public MonthlySalaryReport getMonthlySalaryReport(YearMonth date) {
+        var totalAmount = BigDecimal.ZERO;
+        var totalEmployees = 0;
         for (EmployeeRecord record : employeeRecords) {
-            var event = record.getEvent();
-            var eventYear = YearMonth.from(event.getEventDate()).getYear();
-            if (event.getEventType() == EventType.SALARY && eventYear == date.getYear()) {
-                var month = event.getEventDate().getMonth().getValue();
-                if (salaryReport.containsKey(month)) {
-                    var report = salaryReport.get(month);
-                    report.setTotalSalary(report.getTotalSalary().add(record.getSalaryAmount()));
-                    report.setTotalEmployees(report.getTotalEmployees() + 1);
-                } else {
-                    var report = new MonthlySalaryReport(month, record.getSalaryAmount(), 1);
-                    salaryReport.put(month, report);
-                }
+            var eventDate = YearMonth.from(record.getEvent().getEventDate());
+            var eventType = record.getEvent().getEventType();
+            if (EventType.SALARY == eventType && eventDate.equals(date)) {
+                totalAmount = totalAmount.add(new BigDecimal(record.getEvent().getEventValue()));
+                totalEmployees++;
             }
         }
-        return salaryReport;
+        return new MonthlySalaryReport(date.getMonth(), totalAmount, totalEmployees);
     }
 
     public Map<String, EmployeeFinancialReport> getEmployeeWiseFinancialReport() {
@@ -102,25 +91,18 @@ public class PayrollProcessor {
         return salaryReport;
     }
 
-    public Map<Integer, MonthlyAmountReport> getMonthlyAmountReleasedReport(YearMonth date) {
-        Map<Integer, MonthlyAmountReport> amountReport = new HashMap<>();
+    public MonthlyAmountReport getMonthlyAmountReleasedReport(YearMonth date) {
+        var totalAmount = BigDecimal.ZERO;
+        var totalEmployees = 0;
         for (EmployeeRecord record : employeeRecords) {
+            var eventDate = YearMonth.from(record.getEvent().getEventDate());
             var eventType = record.getEvent().getEventType();
-            var eventYear = YearMonth.from(record.getEvent().getEventDate()).getYear();
-            if (isRightEventAndYear(eventType, eventYear, date)) {
-                var month = record.getEvent().getEventDate().getMonth().getValue();
-                if (amountReport.containsKey(month)) {
-                    var report = amountReport.get(month);
-                    report.setTotalAmount(report.getTotalAmount().add(record.getSalaryAmount()));
-                    report.setTotalEmployees(report.getTotalEmployees() + 1);
-                } else {
-                    var report = new MonthlyAmountReport(month, record.getSalaryAmount(), 1);
-                    amountReport.put(month, report);
-                }
+            if (isRightEventTypeAndDate(eventType, eventDate, date)) {
+                totalAmount = totalAmount.add(new BigDecimal(record.getEvent().getEventValue()));
+                totalEmployees++;
             }
         }
-        return amountReport;
-
+        return new MonthlyAmountReport(date.getMonth(), totalAmount, totalEmployees);
     }
 
     public List<YearlyFinancialReport> getYearlyFinancialReport(int year) {
@@ -132,9 +114,17 @@ public class PayrollProcessor {
                 .collect(Collectors.toList());
     }
 
-    private boolean isRightEventAndYear(EventType eventType, int eventYear, YearMonth date) {
+    public void setEmployeeRecords(List<EmployeeRecord> employeeRecords) {
+        this.employeeRecords = employeeRecords;
+    }
+
+    public List<EmployeeRecord> getEmployeeRecords() {
+        return employeeRecords;
+    }
+
+    private boolean isRightEventTypeAndDate(EventType eventType, YearMonth eventYear, YearMonth date) {
         return List.of(EventType.SALARY, EventType.BONUS, EventType.REIMBURSEMENT)
-                .contains(eventType) && eventYear == date.getYear();
+                .contains(eventType) && eventYear.equals(date);
     }
 
     private String getFileExtension(String filePath) {

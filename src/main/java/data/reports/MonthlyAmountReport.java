@@ -1,23 +1,24 @@
 package data.reports;
 
 import java.math.BigDecimal;
+import java.time.Month;
 
 public class MonthlyAmountReport {
-    private Integer month;
+    private Month month;
     private BigDecimal totalAmount;
     private int totalEmployees;
 
-    public MonthlyAmountReport(Integer month, BigDecimal totalAmount, int totalEmployees) {
+    public MonthlyAmountReport(Month month, BigDecimal totalAmount, int totalEmployees) {
         this.month = month;
         this.totalAmount = totalAmount;
         this.totalEmployees = totalEmployees;
     }
 
-    public Integer getMonth() {
+    public Month getMonth() {
         return month;
     }
 
-    public void setMonth(Integer month) {
+    public void setMonth(Month month) {
         this.month = month;
     }
 
@@ -30,7 +31,7 @@ public class MonthlyAmountReport {
     }
 
     public BigDecimal getTotalAmount() {
-        return getTotalAmount();
+        return totalAmount;
     }
 
     public int getTotalEmployees() {
