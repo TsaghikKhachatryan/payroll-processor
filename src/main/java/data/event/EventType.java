@@ -14,6 +14,7 @@ public enum EventType {
         return Arrays.stream(EventType.values())
                 .filter(event -> event.name().equals(value))
                 .findFirst()
-                .orElseThrow(() -> new NoSuchEventTypeException("Employee Details does not contain any event type"));
+                .orElseThrow(() ->
+                        new NoSuchEventTypeException(String.format("Employee Record: %s does not contain any event type", value)));
     }
 }

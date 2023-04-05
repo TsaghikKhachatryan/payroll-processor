@@ -14,17 +14,20 @@ public class Runner {
         var payrollProcessor = new PayrollProcessor();
         var input = new File(INPUT_PACKAGE_PATH);
         var date = YearMonth.of(2023, Month.NOVEMBER);
+        var monthlyAmountReleaseDate = YearMonth.of(2020, Month.OCTOBER);
 
         Arrays.stream(Objects.requireNonNull(input.listFiles()))
                 .forEach(file -> payrollProcessor.processEmployeeRecord(file.getPath()));
 
-        payrollProcessor.getTotalNumberOfEmployees();
-        payrollProcessor.getEmployeesJoinedInMonth(date);
-        payrollProcessor.getEmployeesExitedInMonth(date);
-        payrollProcessor.getMonthlySalaryReport(date);
-        payrollProcessor.getEmployeeWiseFinancialReport();
-        payrollProcessor.getMonthlyAmountReleasedReport(date);
-        payrollProcessor.getYearlyFinancialReport(date.getYear());
+        payrollProcessor.getEmployeeRecords().stream().forEach(System.out::println);
+
+        var totalNumberOfEmployees = payrollProcessor.getTotalNumberOfEmployees();
+        var employeesJoinedInMonth = payrollProcessor.getEmployeesJoinedInMonth(date);
+        var employeesExitedInMonth = payrollProcessor.getEmployeesExitedInMonth(date);
+        var monthlySalaryReport = payrollProcessor.getMonthlySalaryReport(date);
+        var employeeWiseFinancialReport = payrollProcessor.getEmployeeWiseFinancialReport();
+        var monthlyAmountReleasedReport = payrollProcessor.getMonthlyAmountReleasedReport(monthlyAmountReleaseDate);
+        var yearlyFinancialReport = payrollProcessor.getYearlyFinancialReport(date.getYear());
 
     }
 }

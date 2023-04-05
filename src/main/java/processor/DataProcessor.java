@@ -51,6 +51,6 @@ public interface DataProcessor {
                 .filter(data -> Arrays.stream(EventType.values())
                         .anyMatch(eType -> data.equalsIgnoreCase(eType.name())))
                 .findFirst()
-                .orElseThrow(() -> new NoSuchEventTypeException("Employee Record does not contain any event type"));
+                .orElseThrow(() -> new NoSuchEventTypeException(String.format("Employee Record: %s does not contain any event type", employeeRecord)));
     }
 }
