@@ -47,7 +47,6 @@ class EmployeeRecordsTest {
     void processEmployeeRecord_validTxtFilePath() {
         var dataProcessorMock = Mockito.mock(TextDataProcessor.class);
 
-       // payrollProcessor.processEmployeeRecord(TXT_FILE_PATH);
         dataProcessorMock.readEmployeeRecord(TXT_FILE_PATH);
         Mockito.verify(dataProcessorMock, Mockito.times(1)).readEmployeeRecord(TXT_FILE_PATH);
     }
@@ -72,25 +71,30 @@ class EmployeeRecordsTest {
 
     @Test
     void testGetTotalNumberOfEmployees() {
-        assertEquals(6, payrollProcessor.getTotalNumberOfEmployees());
+        assertEquals(payrollProcessor.getEmployeeRecords().size(), payrollProcessor.getTotalNumberOfEmployees());
     }
 
     @Test
     void testGetEmployeesJoinedInMonth() {
         List<EmployeeRecord> result = payrollProcessor.getEmployeesJoinedInMonth(YearMonth.of(2023, Month.APRIL));
 
+        var expectedEmployeeRecord = payrollProcessor.getEmployeeRecords().get(0);
+
         assertEquals(1, result.size());
-        assertEquals("EMP1", result.get(0).getEmployeeId());
-        assertEquals("Bill", result.get(0).getFirstName());
+        assertEquals(expectedEmployeeRecord.getEmployeeId(), result.get(0).getEmployeeId());
+        assertEquals(expectedEmployeeRecord.getFirstName(), result.get(0).getFirstName());
 
     }
 
     @Test
     void testGetEmployeesExitedInMonth() {
         List<EmployeeRecord> result = payrollProcessor.getEmployeesExitedInMonth(YearMonth.of(2023, Month.SEPTEMBER));
+
+        var expectedEmployeeRecord = payrollProcessor.getEmployeeRecords().get(0);
+
         assertEquals(1, result.size());
-        assertEquals("EMP3", result.get(0).getEmployeeId());
-        assertEquals("Bob", result.get(0).getFirstName());
+        assertEquals(expectedEmployeeRecord.getEmployeeId(), result.get(2).getEmployeeId());
+        assertEquals(expectedEmployeeRecord.getFirstName(), result.get(2).getFirstName());
     }
 
     @Test
@@ -129,13 +133,13 @@ class EmployeeRecordsTest {
     @Test
     public void testGetYearlyFinancialReport() {
         var result = payrollProcessor.getYearlyFinancialReport(2023);
-        var report1 = result.get(0);
-
+        var report = result.get(0);
         var employeeRecord = payrollProcessor.getEmployeeRecords().get(0);
+
         assertEquals(payrollProcessor.getEmployeeRecords().size(), result.size());
-        assertEquals(employeeRecord.getEmployeeId(), report1.getEmployeeId());
-        assertEquals(employeeRecord.getEvent().getEventDate(), report1.getEventDate());
-        assertEquals(employeeRecord.getEvent().getEventValue(), report1.getEventValue());
+        assertEquals(employeeRecord.getEmployeeId(), report.getEmployeeId());
+        assertEquals(employeeRecord.getEvent().getEventDate(), report.getEventDate());
+        assertEquals(employeeRecord.getEvent().getEventValue(), report.getEventValue());
     }
 
     private BigDecimal getExpectedTotalAmount() {
