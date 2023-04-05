@@ -7,12 +7,12 @@ import java.util.logging.Logger;
 
 public class Runner {
 
-    private static final String INPUT_FILE_PATH = "src/main/resources/input";
+    private static final String INPUT_PACKAGE_PATH = "src/main/resources/input";
     private static Logger logger = Logger.getLogger(Runner.class.getName());
 
     public static void main(String[] args) {
         var payrollProcessor = new PayrollProcessor();
-        var input = new File(INPUT_FILE_PATH);
+        var input = new File(INPUT_PACKAGE_PATH);
         var date = YearMonth.of(2023, Month.NOVEMBER);
 
         Arrays.stream(Objects.requireNonNull(input.listFiles()))
