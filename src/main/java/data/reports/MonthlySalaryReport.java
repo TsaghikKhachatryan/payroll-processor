@@ -37,4 +37,13 @@ public class MonthlySalaryReport {
     public int getTotalEmployees() {
         return totalEmployees;
     }
+
+    @Override
+    public String toString() {
+        return "MonthlySalaryReport{" +
+                "month=" + month +
+                ", totalSalary=" + totalSalary +
+                ", totalEmployees=" + totalEmployees +
+                '}';
+    }
 }

@@ -27,4 +27,12 @@ public class EmployeeFinancialReport {
     public void setTotalAmountPaid(BigDecimal totalAmountPaid) {
         this.totalAmountPaid = totalAmountPaid;
     }
+
+    @Override
+    public String toString() {
+        return "EmployeeFinancialReport{" +
+                "employeeId='" + employeeId + '\'' +
+                ", totalAmountPaid=" + totalAmountPaid +
+                '}';
+    }
 }

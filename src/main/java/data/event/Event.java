@@ -47,4 +47,14 @@ public class Event {
     public void setNotes(String notes) {
         this.notes = notes;
     }
+
+    @Override
+    public String toString() {
+        return "Event{" +
+                "eventType=" + eventType +
+                ", eventDate=" + eventDate +
+                ", eventValue='" + eventValue + '\'' +
+                ", notes='" + notes + '\'' +
+                '}';
+    }
 }

@@ -47,4 +47,14 @@ public class YearlyFinancialReport {
     public void setEventValue(String eventValue) {
         this.eventValue = eventValue;
     }
+
+    @Override
+    public String toString() {
+        return "YearlyFinancialReport{" +
+                "event=" + event +
+                ", employeeId='" + employeeId + '\'' +
+                ", eventDate=" + eventDate +
+                ", eventValue='" + eventValue + '\'' +
+                '}';
+    }
 }
