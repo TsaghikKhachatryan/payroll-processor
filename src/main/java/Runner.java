@@ -1,20 +1,22 @@
+import java.io.File;
 import java.time.Month;
 import java.time.YearMonth;
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 public class Runner {
 
+    private static final String INPUT_FILE_PATH = "src/main/resources/input";
     private static Logger logger = Logger.getLogger(Runner.class.getName());
 
-    private static final String CSV_FILE_PATH = "src/main/resources/employeeRecord.csv";
-    private static final String TXT_FILE_PATH = "src/main/resources/employeeRecord.txt";
-
-
     public static void main(String[] args) {
-        var date = YearMonth.of(2023, Month.NOVEMBER);
         var payrollProcessor = new PayrollProcessor();
+        var input = new File(INPUT_FILE_PATH);
+        var date = YearMonth.of(2023, Month.NOVEMBER);
 
-        payrollProcessor.processEmployeeRecord(CSV_FILE_PATH);
+        Arrays.stream(Objects.requireNonNull(input.listFiles()))
+                .forEach(file -> payrollProcessor.processEmployeeRecord(file.getPath()));
 
         payrollProcessor.getTotalNumberOfEmployees();
         payrollProcessor.getEmployeesJoinedInMonth(date);

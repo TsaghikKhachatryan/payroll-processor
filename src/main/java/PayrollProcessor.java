@@ -20,16 +20,18 @@ import data.reports.MonthlyAmountReport;
 
 public class PayrollProcessor {
 
+    private static final String TXT_FORMAT = "txt";
+    private static final String CSV_FORMAT = "csv";
     private final Logger logger = Logger.getLogger(PayrollProcessor.class.getName());
     private List<EmployeeRecord> employeeRecords = new ArrayList<>();
 
     public void processEmployeeRecord(String filePath) {
         var fileFormat = getFileExtension(filePath);
 
-        DataProcessor processor = null;
-        if (fileFormat.equalsIgnoreCase("txt")) {
+        DataProcessor processor;
+        if (fileFormat.equalsIgnoreCase(TXT_FORMAT)) {
             processor = new TextDataProcessor();
-        } else if (fileFormat.equalsIgnoreCase("csv")) {
+        } else if (fileFormat.equalsIgnoreCase(CSV_FORMAT)) {
             processor = new CsvDataProcessor();
         } else {
             throw new IllegalArgumentException(String.format("Invalid file format: %s", fileFormat));
